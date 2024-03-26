@@ -31,6 +31,5 @@ const renderContact = (item) => {
   );
 };
 
-
 addContact("brilliant hanif", 25, "memancing");
 listContact.map(renderContact);
