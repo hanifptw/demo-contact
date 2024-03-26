@@ -21,8 +21,8 @@ const listContact = [
 
 const addContact = (fullName, age, hobby) => {
   let id = listContact.length + 1;
-
   listContact.push({ id, fullName, age, hobby });
+  listContact.map(renderContact);
 };
 
 const renderContact = (item) => {
