@@ -67,6 +67,7 @@ let contacts = [
   
   function addContact(event) {
     event.preventDefault();
+    
     const contactFormData = new FormData(addContactFormElement);
   
     const newContact = {

@@ -1,4 +1,4 @@
-const contacts = [
+let contacts = [
   {
     id: 1,
     fullName: "Hanif",
@@ -22,29 +22,46 @@ const contacts = [
   },
 ];
 
+const searchInputElement = document.getElementById("search-input");
 const contactsListContainerElement = document.getElementById("contact-list");
 const addContactFormElement = document.getElementById("add-contact-form");
 
-function addContact() {
+const addContact = (event) => {
+  event.preventDefault();
+
   const contactFormData = new FormData(addContactFormElement);
 
   const newContact = {
     id: contacts[contacts.length - 1].id + 1,
-    fullName: contactFormData.get("input-fullName"),
-    email: contactFormData.get("input-email"),
-    hobby: contactFormData.get("input-hobby"),
+    fullName: contactFormData.get("fullName-input"),
+    email: contactFormData.get("email-input"),
+    hobby: contactFormData.get("hobby-input"),
     // age: contactFormData.get("input-birthDate"),
     age:
       new Date().getFullYear() -
-      new Date(contactFormData.get("input-birthDate")).getFullYear(),
+      new Date(contactFormData.get("birthDate-input")).getFullYear(),
   };
 
   contacts.push(newContact);
   renderContacts();
-}
+};
 
+function renderContacts() {
 
-const renderContacts = () => {
+  const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const keyword = params.get("search-input");
+  
+    if (keyword) {
+      searchInputElement.value = keyword;
+  
+      const filteredContacts = contacts.filter((contact) =>
+        contact.fullName.toLowerCase().includes(keyword.toLowerCase())
+      );
+  
+      contacts = filteredContacts;
+    }
+
   const contactItemElements = contacts.map(
     (contact) => `<li>
 <h3>${contact.fullName}</h3>
@@ -60,7 +77,17 @@ const renderContacts = () => {
 
   const contactItems = contactItemElements.join("");
   contactsListContainerElement.innerHTML = contactItems;
-};
-renderContacts();
-addContactFormElement.addEventListener("submit", addContact);
+}
 
+function deleteContactById(id) {
+
+  let updatedContacts = contacts.filter(contacts => contacts.id !== id);
+
+  contacts = updatedContacts;
+  
+
+  renderContacts();
+}
+
+window.addEventListener("load", renderContacts);
+addContactFormElement.addEventListener("submit", addContact);
