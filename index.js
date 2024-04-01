@@ -1,93 +1,119 @@
-let contacts = [
-  {
-    id: 1,
-    fullName: "Hanif",
-    email: "Hanif@gmail.com",
-    age: 25,
-    hobby: "Design",
-  },
-  {
-    id: 2,
-    fullName: "Brilliant",
-    email: "Brilliant@gmail.com",
-    age: 20,
-    hobby: "Organization",
-  },
-  {
-    id: 3,
-    fullName: "Almubarak",
-    email: "Hanif@gmail.com",
-    age: 17,
-    hobby: "moutainering",
-  },
-];
+//load local storage
+if (localStorage.length == 0) {
+  let friends = [
+    {
+      id: 1,
+      fullName: "Azyumardi Azra",
+      phone: "+623282722",
+      hobby: "Futsal",
+      age: "26",
+    },
+    {
+      id: 2,
+      fullName: "Fagil Arya Baskoro",
+      phone: "+623901239",
+      hobby: "Bakset",
+      age: "24",
+    },
+    {
+      id: 3,
+      fullName: "Fairuz Akmal Lanang",
+      phone: "+623901239",
+      hobby: "Voli",
+      age: "25",
+    },
+  ];
 
-const searchInputElement = document.getElementById("search-input");
-const contactsListContainerElement = document.getElementById("contact-list");
-const addContactFormElement = document.getElementById("add-contact-form");
+  localStorage.setItem("friends", JSON.stringify(friends));
+}
 
-const addContact = (event) => {
-  event.preventDefault();
+//get element friendlist container
+const friendListContainer = document.getElementById("friendListContainer");
 
-  const contactFormData = new FormData(addContactFormElement);
+//show friendlist
+const renderElement = () => {
+  let friends = JSON.parse(localStorage.getItem("friends"));
 
-  const newContact = {
-    id: contacts[contacts.length - 1].id + 1,
-    fullName: contactFormData.get("fullName-input"),
-    email: contactFormData.get("email-input"),
-    hobby: contactFormData.get("hobby-input"),
-    // age: contactFormData.get("input-birthDate"),
-    age:
-      new Date().getFullYear() -
-      new Date(contactFormData.get("birthDate-input")).getFullYear(),
-  };
-
-  contacts.push(newContact);
-  renderContacts();
-};
-
-function renderContacts() {
-
-  const queryString = window.location.search;
-    const params = new URLSearchParams(queryString);
-    const keyword = params.get("search-input");
-  
-    if (keyword) {
-      searchInputElement.value = keyword;
-  
-      const filteredContacts = contacts.filter((contact) =>
-        contact.fullName.toLowerCase().includes(keyword.toLowerCase())
-      );
-  
-      contacts = filteredContacts;
-    }
-
-  const contactItemElements = contacts.map(
-    (contact) => `<li>
-<h3>${contact.fullName}</h3>
-<p>${contact.email}</p>
-<p>${contact.age}</p>
-<p>${contact.hobby}</p>
-<div>
-  <button onclick="deleteContactById(${contact.id})">Delete</button>
-</div>
-</li>
-`
+  let friendList = friends.map(
+    (friend) =>
+      `<div>
+      <h3>${friend.fullName} </h3> 
+      <p>Phone : ${friend.phone}</p> 
+      <p>Hobby : ${friend.hobby}</p> 
+      <p>Age : ${friend.age}</p><div>
+      <button onclick="deleteFriend(${friend.id});" >Delete</button>
+      <button onclick="editFriend(${friend.id});" >Edit</button>
+      </div>`
   );
 
-  const contactItems = contactItemElements.join("");
-  contactsListContainerElement.innerHTML = contactItems;
-}
+  friendListElement = friendList.join("");
+  friendListContainer.innerHTML = friendListElement;
+};
 
-function deleteContactById(id) {
+//add friend
+const addFriend = () => {
+  event.preventDefault();
+  let friends = JSON.parse(localStorage.getItem("friends"));
 
-  let updatedContacts = contacts.filter(contacts => contacts.id !== id);
+  let fullName = document.getElementById("fullName").value;
+  let phone = document.getElementById("phone").value;
+  let hobby = document.getElementById("hobby").value;
+  let age = document.getElementById("age").value;
 
-  contacts = updatedContacts;
-  
+  friends.unshift({
+    id: Math.floor(Math.random() * 500),
+    fullName,
+    phone,
+    hobby,
+    age,
+  });
 
-  renderContacts();
-}
+  localStorage.setItem("friends", JSON.stringify(friends));
+  renderElement();
+};
 
-window.addEventListener("load", renderContacts);
-addContactFormElement.addEventListener("submit", addContact);
+//delete friend
+const deleteFriend = (id) => {
+  let friends = JSON.parse(localStorage.getItem("friends"));
+  let newFriends = friends.filter((friend) => friend.id !== id);
+  localStorage.setItem("friends", JSON.stringify(newFriends));
+  renderElement();
+};
+
+//edit friend
+const editFriend = (id) => {
+  let friends = JSON.parse(localStorage.getItem("friends"));
+  let editFriend = friends.find((friend) => friend.id == id);
+
+  document.getElementById("fullName").value = editFriend.fullName;
+  document.getElementById("phone").value = editFriend.phone;
+  document.getElementById("hobby").value = editFriend.hobby;
+  document.getElementById("age").value = editFriend.age;
+
+  tempFriendId = editFriend.id;
+};
+
+//update friend
+const updateFriend = (id) => {
+  let friends = JSON.parse(localStorage.getItem("friends"));
+
+  fullName = document.getElementById("fullName").value;
+  phone = document.getElementById("phone").value;
+  hobby = document.getElementById("hobby").value;
+  age = document.getElementById("age").value;
+
+  friends.map((item) => {
+    if (item.id == +tempFriendId) {
+      item.fullName = fullName;
+      item.phone = phone;
+      item.hobby = hobby;
+      item.age = age;
+    }
+  });
+
+  localStorage.setItem("friends", JSON.stringify(friends));
+  renderElement();
+  tempFriendId = null;
+};
+
+onload = renderElement();
