@@ -9,7 +9,12 @@
   <body>
     <h1>My Friends</h1>
     <form method="get">
-      <input type="text" name="search" id="search" placeholder="Type a name...">
+      <input
+        type="text"
+        name="search"
+        id="search"
+        placeholder="Type a name..."
+      />
       <button onclick="renderElement();" type="button">Search</button>
     </form>
 
@@ -47,11 +52,12 @@
         name="age"
         id="age"
         placeholder="Your Age..."
-        value="25"event.preventDefault();
+        value="25"
+        event.preventDefault();
       />
 
       <button onclick="addFriend();" type="button">Add Friend</button>
-      <button onclick="updateFriend(id)" type="button">Update </button>
+      <button onclick="updateFriend(id)" type="button">Update</button>
     </form>
 
     <ul id="friendListContainer">

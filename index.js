@@ -29,6 +29,9 @@ if (localStorage.length == 0) {
 
 //get element friendlist container
 const friendListContainer = document.getElementById("friendListContainer");
+tempFriendId=null;
+
+
 
 //show friendlist
 const renderElement = () => {
@@ -39,7 +42,7 @@ const renderElement = () => {
   let searchedName = friends.filter((item) =>
     item.fullName.toLowerCase().includes(searchName.toLowerCase())
   );
-  if (searchName !== "") {
+  if (searchName) {
     friends = searchedName;
   }
 
