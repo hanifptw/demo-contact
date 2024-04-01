@@ -29,18 +29,21 @@ if (localStorage.length == 0) {
 
 //get element friendlist container
 const friendListContainer = document.getElementById("friendListContainer");
-tempFriendId=null;
+tempFriendId = null;
 
-
+//search name
+let searchName = document.getElementById("search");
+searchName.addEventListener("input", () => {
+  renderElement();
+});
 
 //show friendlist
 const renderElement = () => {
   let friends = JSON.parse(localStorage.getItem("friends"));
 
-  //search name
-  let searchName = document.getElementById("search").value;
+  //if search
   let searchedName = friends.filter((item) =>
-    item.fullName.toLowerCase().includes(searchName.toLowerCase())
+    item.fullName.toLowerCase().includes(searchName.value.toLowerCase())
   );
   if (searchName) {
     friends = searchedName;
@@ -51,7 +54,7 @@ const renderElement = () => {
       `<div>
       <h3>${friend.fullName} </h3> 
       <p>Phone : ${friend.phone}</p> 
-      <p>Hobby : ${friend.hobbidy}</p> 
+      <p>Hobby : ${friend.hobby}</p> 
       <p>Age : ${friend.age}</p><div>
       <button onclick="deleteFriend(${friend.id});" >Delete</button>
       <button onclick="editFriend(${friend.id});" >Edit</button>
