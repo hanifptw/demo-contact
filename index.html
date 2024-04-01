@@ -9,6 +9,11 @@
   <body>
     <h1>My Friends</h1>
     <form method="get">
+      <input type="text" name="search" id="search" placeholder="Type a name...">
+      <button onclick="renderElement();" type="button">Search</button>
+    </form>
+
+    <form method="get">
       <label for="fullName"></label>
       <input
         type="text"
@@ -42,7 +47,7 @@
         name="age"
         id="age"
         placeholder="Your Age..."
-        value="25"
+        value="25"event.preventDefault();
       />
 
       <button onclick="addFriend();" type="button">Add Friend</button>

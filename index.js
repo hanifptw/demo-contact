@@ -34,12 +34,21 @@ const friendListContainer = document.getElementById("friendListContainer");
 const renderElement = () => {
   let friends = JSON.parse(localStorage.getItem("friends"));
 
+  //search name
+  let searchName = document.getElementById("search").value;
+  let searchedName = friends.filter((item) =>
+    item.fullName.toLowerCase().includes(searchName.toLowerCase())
+  );
+  if (searchName !== "") {
+    friends = searchedName;
+  }
+
   let friendList = friends.map(
     (friend) =>
       `<div>
       <h3>${friend.fullName} </h3> 
       <p>Phone : ${friend.phone}</p> 
-      <p>Hobby : ${friend.hobby}</p> 
+      <p>Hobby : ${friend.hobbidy}</p> 
       <p>Age : ${friend.age}</p><div>
       <button onclick="deleteFriend(${friend.id});" >Delete</button>
       <button onclick="editFriend(${friend.id});" >Edit</button>
@@ -72,7 +81,7 @@ const addFriend = () => {
   renderElement();
 };
 
-//delete friend
+//delete friendfriendfriend
 const deleteFriend = (id) => {
   let friends = JSON.parse(localStorage.getItem("friends"));
   let newFriends = friends.filter((friend) => friend.id !== id);
@@ -116,4 +125,7 @@ const updateFriend = (id) => {
   tempFriendId = null;
 };
 
-onload = renderElement();
+//search name
+const searchingName = () => {};
+
+onload = renderElement(search);
