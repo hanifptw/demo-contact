@@ -1,5 +1,5 @@
 //load local storage
-if (localStorage.length == 0) {
+if (!localStorage.length) {
   let friends = [
     {
       id: 1,
@@ -130,8 +130,5 @@ const updateFriend = (id) => {
   renderElement();
   tempFriendId = null;
 };
-
-//search name
-const searchingName = () => {};
 
 onload = renderElement(search);
